@@ -1,0 +1,436 @@
+﻿origem,destino,economica,executiva
+Pedro Nolasco,Flexal,12,35
+Pedro Nolasco,Fundão,24,42
+Pedro Nolasco,Aricanga,27,42
+Pedro Nolasco,Piraqueaçu,29,42
+Pedro Nolasco,Colatina,37,49
+Pedro Nolasco,Itapina,39,57
+Pedro Nolasco,Mascarenhas,39,57
+Pedro Nolasco,Baixo Guandu,39,57
+Pedro Nolasco,Aimorés,39,57
+Pedro Nolasco,Resplendor,42,69
+Pedro Nolasco,Crenaque,42,69
+Pedro Nolasco,Conselheiro Pena,42,69
+Pedro Nolasco,Barra do Cuieté,46,73
+Pedro Nolasco,São Tomé do Rio Doce,46,73
+Pedro Nolasco,Tumiritinga,46,73
+Pedro Nolasco,Governador Valadares,50,85
+Pedro Nolasco,Pedra Corrida,60,92
+Pedro Nolasco,Periquito,60,92
+Pedro Nolasco,Frederico Sellow,60,92
+Pedro Nolasco,Ipaba,64,98
+Pedro Nolasco,Intendente Câmara,64,98
+Pedro Nolasco,Mário Carvalho,64,98
+Pedro Nolasco,Antônio Dias,69,104
+Pedro Nolasco,Desembargador Drumond,75,111
+Pedro Nolasco,João Monlevade,75,111
+Pedro Nolasco,Rio Piracicaba,75,111
+Pedro Nolasco,Dois Irmãos,83,118
+Pedro Nolasco,Belo Horizonte,87,125
+Pedro Nolasco,Itabira,75,111
+Flexal,Fundão,18,35
+Flexal,Aricanga,27,42
+Flexal,Piraqueaçu,29,42
+Flexal,Colatina,37,49
+Flexal,Itapina,37,49
+Flexal,Mascarenhas,39,57
+Flexal,Baixo Guandu,39,57
+Flexal,Aimorés,39,57
+Flexal,Resplendor,42,69
+Flexal,Crenaque,42,69
+Flexal,Conselheiro Pena,42,69
+Flexal,Barra do Cuieté,46,73
+Flexal,São Tomé do Rio Doce,46,73
+Flexal,Tumiritinga,46,73
+Flexal,Governador Valadares,50,85
+Flexal,Pedra Corrida,60,92
+Flexal,Periquito,60,92
+Flexal,Frederico Sellow,60,92
+Flexal,Ipaba,64,98
+Flexal,Intendente Câmara,64,98
+Flexal,Mário Carvalho,64,98
+Flexal,Antônio Dias,69,104
+Flexal,Desembargador Drumond,75,111
+Flexal,João Monlevade,75,111
+Flexal,Rio Piracicaba,75,111
+Flexal,Dois Irmãos,83,118
+Flexal,Belo Horizonte,87,125
+Flexal,Itabira,75,111
+Fundão,Aricanga,15,35
+Fundão,Piraqueaçu,18,35
+Fundão,Colatina,29,42
+Fundão,Itapina,37,49
+Fundão,Mascarenhas,37,49
+Fundão,Baixo Guandu,37,49
+Fundão,Aimorés,37,49
+Fundão,Resplendor,39,57
+Fundão,Crenaque,39,57
+Fundão,Conselheiro Pena,39,57
+Fundão,Barra do Cuieté,42,69
+Fundão,São Tomé do Rio Doce,42,69
+Fundão,Tumiritinga,42,69
+Fundão,Governador Valadares,46,73
+Fundão,Pedra Corrida,50,85
+Fundão,Periquito,50,85
+Fundão,Frederico Sellow,50,85
+Fundão,Ipaba,60,92
+Fundão,Intendente Câmara,60,92
+Fundão,Mário Carvalho,60,92
+Fundão,Antônio Dias,64,98
+Fundão,Desembargador Drumond,69,104
+Fundão,João Monlevade,69,104
+Fundão,Rio Piracicaba,69,104
+Fundão,Dois Irmãos,75,111
+Fundão,Belo Horizonte,85,118
+Fundão,Itabira,69,104
+Aricanga,Piraqueaçu,14,35
+Aricanga,Colatina,24,42
+Aricanga,Itapina,29,42
+Aricanga,Mascarenhas,29,42
+Aricanga,Baixo Guandu,37,49
+Aricanga,Aimorés,37,49
+Aricanga,Resplendor,37,49
+Aricanga,Crenaque,39,57
+Aricanga,Conselheiro Pena,39,57
+Aricanga,Barra do Cuieté,39,57
+Aricanga,São Tomé do Rio Doce,42,69
+Aricanga,Tumiritinga,42,69
+Aricanga,Governador Valadares,46,73
+Aricanga,Pedra Corrida,46,73
+Aricanga,Periquito,50,85
+Aricanga,Frederico Sellow,50,85
+Aricanga,Ipaba,50,85
+Aricanga,Intendente Câmara,60,92
+Aricanga,Mário Carvalho,60,92
+Aricanga,Antônio Dias,64,98
+Aricanga,Desembargador Drumond,64,98
+Aricanga,João Monlevade,69,104
+Aricanga,Rio Piracicaba,69,104
+Aricanga,Dois Irmãos,75,111
+Aricanga,Belo Horizonte,83,118
+Aricanga,Itabira,69,104
+Piraqueaçu,Colatina,25,42
+Piraqueaçu,Itapina,29,42
+Piraqueaçu,Mascarenhas,29,42
+Piraqueaçu,Baixo Guandu,29,42
+Piraqueaçu,Aimorés,37,49
+Piraqueaçu,Resplendor,37,49
+Piraqueaçu,Crenaque,39,57
+Piraqueaçu,Conselheiro Pena,39,57
+Piraqueaçu,Barra do Cuieté,39,57
+Piraqueaçu,São Tomé do Rio Doce,39,57
+Piraqueaçu,Tumiritinga,42,69
+Piraqueaçu,Governador Valadares,42,69
+Piraqueaçu,Pedra Corrida,46,73
+Piraqueaçu,Periquito,46,72
+Piraqueaçu,Frederico Sellow,50,85
+Piraqueaçu,Ipaba,50,85
+Piraqueaçu,Intendente Câmara,60,92
+Piraqueaçu,Mário Carvalho,60,92
+Piraqueaçu,Antônio Dias,64,98
+Piraqueaçu,Desembargador Drumond,64,98
+Piraqueaçu,João Monlevade,69,104
+Piraqueaçu,Rio Piracicaba,69,104
+Piraqueaçu,Dois Irmãos,75,111
+Piraqueaçu,Belo Horizonte,83,118
+Piraqueaçu,Itabira,69,104
+Colatina,Itapina,17,35
+Colatina,Mascarenhas,18,35
+Colatina,Baixo Guandu,18,35
+Colatina,Aimorés,18,35
+Colatina,Resplendor,29,42
+Colatina,Crenaque,29,42
+Colatina,Conselheiro Pena,37,49
+Colatina,Barra do Cuieté,37,49
+Colatina,São Tomé do Rio Doce,37,49
+Colatina,Tumiritinga,37,49
+Colatina,Governador Valadares,39,57
+Colatina,Pedra Corrida,42,69
+Colatina,Periquito,42,69
+Colatina,Frederico Sellow,46,73
+Colatina,Ipaba,46,73
+Colatina,Intendente Câmara,50,85
+Colatina,Mário Carvalho,50,85
+Colatina,Antônio Dias,50,85
+Colatina,Desembargador Drumond,60,92
+Colatina,João Monlevade,60,92
+Colatina,Rio Piracicaba,64,98
+Colatina,Dois Irmãos,69,104
+Colatina,Belo Horizonte,75,111
+Colatina,Itabira,64,98
+Itapina,Mascarenhas,15,35
+Itapina,Baixo Guandu,17,35
+Itapina,Aimorés,18,35
+Itapina,Resplendor,28,42
+Itapina,Crenaque,29,42
+Itapina,Conselheiro Pena,29,42
+Itapina,Barra do Cuieté,37,49
+Itapina,São Tomé do Rio Doce,37,49
+Itapina,Tumiritinga,37,49
+Itapina,Governador Valadares,39,57
+Itapina,Pedra Corrida,42,69
+Itapina,Periquito,42,69
+Itapina,Frederico Sellow,42,69
+Itapina,Ipaba,46,73
+Itapina,Intendente Câmara,46,73
+Itapina,Mário Carvalho,46,73
+Itapina,Antônio Dias,50,85
+Itapina,Desembargador Drumond,60,92
+Itapina,João Monlevade,60,92
+Itapina,Rio Piracicaba,60,92
+Itapina,Dois Irmãos,64,98
+Itapina,Belo Horizonte,75,111
+Itapina,Itabira,60,92
+Mascarenhas,Baixo Guandu,14,35
+Mascarenhas,Aimorés,16,35
+Mascarenhas,Resplendor,24,42
+Mascarenhas,Crenaque,29,42
+Mascarenhas,Conselheiro Pena,29,42
+Mascarenhas,Barra do Cuieté,29,42
+Mascarenhas,São Tomé do Rio Doce,37,49
+Mascarenhas,Tumiritinga,37,49
+Mascarenhas,Governador Valadares,39,57
+Mascarenhas,Pedra Corrida,39,57
+Mascarenhas,Periquito,42,69
+Mascarenhas,Frederico Sellow,42,69
+Mascarenhas,Ipaba,46,73
+Mascarenhas,Intendente Câmara,46,73
+Mascarenhas,Mário Carvalho,46,73
+Mascarenhas,Antônio Dias,50,85
+Mascarenhas,Desembargador Drumond,50,85
+Mascarenhas,João Monlevade,60,92
+Mascarenhas,Rio Piracicaba,60,92
+Mascarenhas,Dois Irmãos,64,98
+Mascarenhas,Belo Horizonte,69,104
+Mascarenhas,Itabira,60,92
+Baixo Guandu,Aimorés,13,35
+Baixo Guandu,Resplendor,18,35
+Baixo Guandu,Crenaque,25,42
+Baixo Guandu,Conselheiro Pena,29,42
+Baixo Guandu,Barra do Cuieté,29,42
+Baixo Guandu,São Tomé do Rio Doce,29,42
+Baixo Guandu,Tumiritinga,37,49
+Baixo Guandu,Governador Valadares,37,49
+Baixo Guandu,Pedra Corrida,39,57
+Baixo Guandu,Periquito,39,57
+Baixo Guandu,Frederico Sellow,42,69
+Baixo Guandu,Ipaba,42,69
+Baixo Guandu,Intendente Câmara,46,73
+Baixo Guandu,Mário Carvalho,46,73
+Baixo Guandu,Antônio Dias,50,85
+Baixo Guandu,Desembargador Drumond,50,85
+Baixo Guandu,João Monlevade,60,92
+Baixo Guandu,Rio Piracicaba,60,92
+Baixo Guandu,Dois Irmãos,64,98
+Baixo Guandu,Belo Horizonte,69,104
+Baixo Guandu,Itabira,60,92
+Aimorés,Resplendor,18,34
+Aimorés,Crenaque,23,42
+Aimorés,Conselheiro Pena,29,42
+Aimorés,Barra do Cuieté,29,42
+Aimorés,São Tomé do Rio Doce,29,42
+Aimorés,Tumiritinga,37,48
+Aimorés,Governador Valadares,37,48
+Aimorés,Pedra Corrida,39,56
+Aimorés,Periquito,39,56
+Aimorés,Frederico Sellow,42,68
+Aimorés,Ipaba,42,68
+Aimorés,Intendente Câmara,46,72
+Aimorés,Mário Carvalho,46,72
+Aimorés,Antônio Dias,50,84
+Aimorés,Desembargador Drumond,50,84
+Aimorés,João Monlevade,50,84
+Aimorés,Rio Piracicaba,60,90
+Aimorés,Dois Irmãos,64,96
+Aimorés,Belo Horizonte,69,104
+Aimorés,Itabira,60,90
+Resplendor,Crenaque,16,34
+Resplendor,Conselheiro Pena,18,34
+Resplendor,Barra do Cuieté,18,34
+Resplendor,São Tomé do Rio Doce,26,42
+Resplendor,Tumiritinga,29,42
+Resplendor,Governador Valadares,37,48
+Resplendor,Pedra Corrida,37,48
+Resplendor,Periquito,39,56
+Resplendor,Frederico Sellow,39,56
+Resplendor,Ipaba,39,56
+Resplendor,Intendente Câmara,42,68
+Resplendor,Mário Carvalho,42,68
+Resplendor,Antônio Dias,46,72
+Resplendor,Desembargador Drumond,46,72
+Resplendor,João Monlevade,50,84
+Resplendor,Rio Piracicaba,50,84
+Resplendor,Dois Irmãos,60,90
+Resplendor,Belo Horizonte,64,96
+Resplendor,Itabira,50,84
+Crenaque,Conselheiro Pena,17,34
+Crenaque,Barra do Cuieté,18,34
+Crenaque,São Tomé do Rio Doce,18,34
+Crenaque,Tumiritinga,18,34
+Crenaque,Governador Valadares,29,42
+Crenaque,Pedra Corrida,37,48
+Crenaque,Periquito,37,48
+Crenaque,Frederico Sellow,39,56
+Crenaque,Ipaba,39,56
+Crenaque,Intendente Câmara,42,68
+Crenaque,Mário Carvalho,42,68
+Crenaque,Antônio Dias,42,68
+Crenaque,Desembargador Drumond,46,72
+Crenaque,João Monlevade,46,72
+Crenaque,Rio Piracicaba,50,84
+Crenaque,Dois Irmãos,60,90
+Crenaque,Belo Horizonte,64,96
+Crenaque,Itabira,50,84
+Conselheiro Pena,Barra do Cuieté,16,34
+Conselheiro Pena,São Tomé do Rio Doce,18,34
+Conselheiro Pena,Tumiritinga,18,34
+Conselheiro Pena,Governador Valadares,29,42
+Conselheiro Pena,Pedra Corrida,37,48
+Conselheiro Pena,Periquito,37,48
+Conselheiro Pena,Frederico Sellow,37,48
+Conselheiro Pena,Ipaba,39,56
+Conselheiro Pena,Intendente Câmara,39,56
+Conselheiro Pena,Mário Carvalho,39,56
+Conselheiro Pena,Antônio Dias,42,68
+Conselheiro Pena,Desembargador Drumond,46,72
+Conselheiro Pena,João Monlevade,46,72
+Conselheiro Pena,Rio Piracicaba,46,72
+Conselheiro Pena,Dois Irmãos,50,84
+Conselheiro Pena,Belo Horizonte,64,96
+Conselheiro Pena,Itabira,46,72
+Barra do Cuieté,São Tomé do Rio Doce,14,34
+Barra do Cuieté,Tumiritinga,16,34
+Barra do Cuieté,Governador Valadares,29,42
+Barra do Cuieté,Pedra Corrida,29,42
+Barra do Cuieté,Periquito,37,48
+Barra do Cuieté,Frederico Sellow,37,48
+Barra do Cuieté,Ipaba,39,56
+Barra do Cuieté,Intendente Câmara,39,56
+Barra do Cuieté,Mário Carvalho,39,56
+Barra do Cuieté,Antônio Dias,42,68
+Barra do Cuieté,Desembargador Drumond,42,68
+Barra do Cuieté,João Monlevade,46,72
+Barra do Cuieté,Rio Piracicaba,46,72
+Barra do Cuieté,Dois Irmãos,50,84
+Barra do Cuieté,Belo Horizonte,64,96
+Barra do Cuieté,Itabira,46,72
+São Tomé do Rio Doce,Tumiritinga,15,34
+São Tomé do Rio Doce,Governador Valadares,26,42
+São Tomé do Rio Doce,Pedra Corrida,29,42
+São Tomé do Rio Doce,Periquito,37,48
+São Tomé do Rio Doce,Frederico Sellow,37,48
+São Tomé do Rio Doce,Ipaba,37,48
+São Tomé do Rio Doce,Intendente Câmara,39,56
+São Tomé do Rio Doce,Mário Carvalho,39,56
+São Tomé do Rio Doce,Antônio Dias,42,68
+São Tomé do Rio Doce,Desembargador Drumond,42,68
+São Tomé do Rio Doce,João Monlevade,46,72
+São Tomé do Rio Doce,Rio Piracicaba,46,72
+São Tomé do Rio Doce,Dois Irmãos,50,84
+São Tomé do Rio Doce,Belo Horizonte,60,90
+São Tomé do Rio Doce,Itabira,46,72
+Tumiritinga,Governador Valadares,18,34
+Tumiritinga,Pedra Corrida,29,42
+Tumiritinga,Periquito,29,42
+Tumiritinga,Frederico Sellow,37,48
+Tumiritinga,Ipaba,37,48
+Tumiritinga,Intendente Câmara,39,56
+Tumiritinga,Mário Carvalho,39,56
+Tumiritinga,Antônio Dias,39,56
+Tumiritinga,Desembargador Drumond,42,68
+Tumiritinga,João Monlevade,42,68
+Tumiritinga,Rio Piracicaba,46,72
+Tumiritinga,Dois Irmãos,50,84
+Tumiritinga,Belo Horizonte,60,90
+Tumiritinga,Itabira,46,72
+Governador Valadares,Pedra Corrida,18,34
+Governador Valadares,Periquito,18,34
+Governador Valadares,Frederico Sellow,29,42
+Governador Valadares,Ipaba,29,42
+Governador Valadares,Intendente Câmara,37,48
+Governador Valadares,Mário Carvalho,37,48
+Governador Valadares,Antônio Dias,39,56
+Governador Valadares,Desembargador Drumond,39,56
+Governador Valadares,João Monlevade,42,68
+Governador Valadares,Rio Piracicaba,42,68
+Governador Valadares,Dois Irmãos,46,72
+Governador Valadares,Belo Horizonte,50,84
+Governador Valadares,Itabira,42,68
+Pedra Corrida,Periquito,16,34
+Pedra Corrida,Frederico Sellow,18,34
+Pedra Corrida,Ipaba,26,42
+Pedra Corrida,Intendente Câmara,29,42
+Pedra Corrida,Mário Carvalho,29,42
+Pedra Corrida,Antônio Dias,37,48
+Pedra Corrida,Desembargador Drumond,37,48
+Pedra Corrida,João Monlevade,39,56
+Pedra Corrida,Rio Piracicaba,39,56
+Pedra Corrida,Dois Irmãos,42,68
+Pedra Corrida,Belo Horizonte,50,84
+Pedra Corrida,Itabira,39,56
+Periquito,Frederico Sellow,18,34
+Periquito,Ipaba,18,34
+Periquito,Intendente Câmara,28,42
+Periquito,Mário Carvalho,29,42
+Periquito,Antônio Dias,37,48
+Periquito,Desembargador Drumond,37,48
+Periquito,João Monlevade,39,56
+Periquito,Rio Piracicaba,39,56
+Periquito,Dois Irmãos,42,68
+Periquito,Belo Horizonte,46,72
+Periquito,Itabira,39,56
+Frederico Sellow,Ipaba,17,34
+Frederico Sellow,Intendente Câmara,18,34
+Frederico Sellow,Mário Carvalho,18,34
+Frederico Sellow,Antônio Dias,29,42
+Frederico Sellow,Desembargador Drumond,37,48
+Frederico Sellow,João Monlevade,37,48
+Frederico Sellow,Rio Piracicaba,37,48
+Frederico Sellow,Dois Irmãos,39,56
+Frederico Sellow,Belo Horizonte,46,72
+Frederico Sellow,Itabira,37,48
+Ipaba,Intendente Câmara,16,34
+Ipaba,Mário Carvalho,18,34
+Ipaba,Antônio Dias,29,42
+Ipaba,Desembargador Drumond,29,42
+Ipaba,João Monlevade,37,48
+Ipaba,Rio Piracicaba,37,48
+Ipaba,Dois Irmãos,39,56
+Ipaba,Belo Horizonte,42,68
+Ipaba,Itabira,37,48
+Intendente Câmara,Mário Carvalho,16,34
+Intendente Câmara,Antônio Dias,18,34
+Intendente Câmara,Desembargador Drumond,29,42
+Intendente Câmara,João Monlevade,29,42
+Intendente Câmara,Rio Piracicaba,37,48
+Intendente Câmara,Dois Irmãos,39,56
+Intendente Câmara,Belo Horizonte,42,68
+Intendente Câmara,Itabira,37,48
+Mário Carvalho,Antônio Dias,18,34
+Mário Carvalho,Desembargador Drumond,27,42
+Mário Carvalho,João Monlevade,29,42
+Mário Carvalho,Rio Piracicaba,29,42
+Mário Carvalho,Dois Irmãos,37,48
+Mário Carvalho,Belo Horizonte,42,68
+Mário Carvalho,Itabira,29,42
+Antônio Dias,Desembargador Drumond,18,34
+Antônio Dias,João Monlevade,18,34
+Antônio Dias,Rio Piracicaba,28,42
+Antônio Dias,Dois Irmãos,37,48
+Antônio Dias,Belo Horizonte,39,56
+Antônio Dias,Itabira,23,42
+Desembargador Drumond,João Monlevade,18,34
+Desembargador Drumond,Rio Piracicaba,18,34
+Desembargador Drumond,Dois Irmãos,29,42
+Desembargador Drumond,Belo Horizonte,39,56
+Desembargador Drumond,Itabira,18,18
+João Monlevade,Rio Piracicaba,16,34
+João Monlevade,Dois Irmãos,29,42
+João Monlevade,Belo Horizonte,37,48
+João Monlevade,Itabira,16,34
+Rio Piracicaba,Dois Irmãos,18,34
+Rio Piracicaba,Belo Horizonte,37,48
+Rio Piracicaba,Itabira,12,34
+Dois Irmãos,Belo Horizonte,29,42
+Dois Irmãos,Itabira,25,42
+Belo Horizonte,Itabira,37,48
