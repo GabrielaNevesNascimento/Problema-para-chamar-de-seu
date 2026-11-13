@@ -1,0 +1,11 @@
+﻿origem,destino,demanda
+Pedro Nolasco,Colatina,450
+Pedro Nolasco,Governador Valadares,320
+Pedro Nolasco,Intendente Câmara,240
+Pedro Nolasco,Belo Horizonte,600
+Colatina,Governador Valadares,500
+Colatina,Intendente Câmara,250
+Colatina,Belo Horizonte,380
+Governador Valadares,Intendente Câmara,650
+Governador Valadares,Belo Horizonte,400
+Intendente Câmara,Belo Horizonte,800
