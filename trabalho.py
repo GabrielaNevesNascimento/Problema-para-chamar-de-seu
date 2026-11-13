@@ -1,255 +1,388 @@
-"""Alocacao de assentos EFVM: BH -> Pedro Nolasco (Vitoria).
 
-Requisitos: pip install pulp numpy
-Coloque tarifas_vale.csv na mesma pasta deste arquivo.
-Tarifas de 10/12/2025; hipotese de simetria entre sentidos.
-Demandas e capacidade sao hipoteses de estudo, nao observacoes operacionais.
-"""
+"""Otimizacao de passagens da EFVM por Programacao Linear Inteira."""
+
 import csv
 import itertools
 import statistics
 import time
-from pathlib import Path
 
 import numpy as np
 import pulp
 
-PASTA = Path(__file__).resolve().parent
-CAPACIDADE = 2250  # referencia historica fornecida; classe economica
-CENARIO = 1         # 1: ilimitada; 2: fixa; 3: simulacoes
-CLASSE = 'economica'
-REPETICOES = 100
-SEMENTE = 42
-
-# Indices seguem a ordem ORIGINAL do CSV: ES -> MG.
-# A simulacao reverte essa ordem automaticamente para BH -> ES.
-ESTACOES = [
-    'Pedro Nolasco', 'Flexal', 'Fundão', 'Aricanga', 'Piraqueaçu',
-    'Colatina', 'Itapina', 'Mascarenhas', 'Baixo Guandu', 'Aimorés',
-    'Resplendor', 'Crenaque', 'Conselheiro Pena', 'Barra do Cuieté',
-    'São Tomé do Rio Doce', 'Tumiritinga', 'Governador Valadares',
-    'Pedra Corrida', 'Periquito', 'Frederico Sellow', 'Ipaba',
-    'Intendente Câmara', 'Mário Carvalho', 'Antônio Dias',
-    'Desembargador Drumond', 'João Monlevade', 'Rio Piracicaba',
-    'Dois Irmãos', 'Belo Horizonte'
-]
-SELECIONADAS = [0, 5, 16, 21, 28]  # BH, Intendente, GV, Colatina, Pedro Nolasco
-
-# Valores hipoteticos para as cinco estacoes de exemplo, sentido BH -> ES.
-DEMANDA_EXEMPLO = {
-    ('Belo Horizonte', 'Intendente Câmara'): 800,
-    ('Belo Horizonte', 'Governador Valadares'): 400,
-    ('Belo Horizonte', 'Colatina'): 380,
-    ('Belo Horizonte', 'Pedro Nolasco'): 600,
-    ('Intendente Câmara', 'Governador Valadares'): 650,
-    ('Intendente Câmara', 'Colatina'): 250,
-    ('Intendente Câmara', 'Pedro Nolasco'): 240,
-    ('Governador Valadares', 'Colatina'): 500,
-    ('Governador Valadares', 'Pedro Nolasco'): 320,
-    ('Colatina', 'Pedro Nolasco'): 450,
-}
-
-# Simulacoes: valores uniformes (pessoas por mercado O-D).
-# A quarta familia concentra maior demanda nos mercados com polos regionais.
-PERFIS = {
-    'baixa': (50, 250),
-    'moderada': (200, 600),
-    'alta': (600, 1400),
-    'polos_regionais': (100, 450),
-}
-POLOS = {'Belo Horizonte', 'Governador Valadares', 'Intendente Câmara', 'Pedro Nolasco'}
-FATOR_POLOS = 2.0
+from funcoesauxiliares import (
+    PASTA,
+    CAPACIDADE,
+    CENARIO,
+    CLASSE,
+    REPETICOES,
+    SEMENTE,
+    ESTACOES,
+    SELECIONADAS,
+    PERFIS,
+    validar_configuracao,
+    carregar_tarifas,
+    carregar_demanda_fixa,
+    calcular_pesos_populacionais,
+    gerar_demanda,
+    imprimir_resultado,
+)
 
 
-def validar_configuracao():
-    if CENARIO not in (1, 2, 3):
-        raise ValueError('CENARIO deve ser 1, 2 ou 3')
-    if CLASSE not in ('economica', 'executiva'):
-        raise ValueError('CLASSE invalida')
-    if not isinstance(CAPACIDADE, int) or CAPACIDADE <= 0:
-        raise ValueError('CAPACIDADE deve ser inteiro positivo')
-    if len(SELECIONADAS) < 2 or SELECIONADAS != sorted(set(SELECIONADAS)):
-        raise ValueError('SELECIONADAS precisa ter >= 2 indices distintos e crescentes')
-    if not all(0 <= i < len(ESTACOES) for i in SELECIONADAS):
-        raise ValueError('Indice de estacao invalido')
-    if REPETICOES < 1:
-        raise ValueError('REPETICOES deve ser positiva')
-
-
-def carregar_tarifas(arquivo, mercados):
-    """O CSV esta em ES->MG. Assumimos simetria tarifaria no sentido inverso."""
-    tabela = {}
-    with arquivo.open(encoding='utf-8-sig', newline='') as f:
-        for linha in csv.DictReader(f):
-            chave = (linha['origem'].strip(), linha['destino'].strip())
-            if chave in tabela:
-                raise ValueError(f'Tarifa duplicada: {chave}')
-            tabela[chave] = float(linha[CLASSE].replace(',', '.'))
-    tarifas = {}
-    for a, b in mercados:
-        if (a, b) in tabela:
-            tarifas[a, b] = tabela[a, b]
-        elif (b, a) in tabela:
-            tarifas[a, b] = tabela[b, a]
-        else:
-            raise ValueError(f'Tarifa nao encontrada para {a} -> {b}')
-    return tarifas
-
-
-def carregar_demanda_fixa(mercados):
-    arquivo = PASTA / 'demandas_cenario2_BH_Vitoria.csv'
-    if not arquivo.exists():
-        with arquivo.open('w', encoding='utf-8-sig', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(['origem', 'destino', 'demanda'])
-            for a, b in mercados:
-                writer.writerow([a, b, DEMANDA_EXEMPLO.get((a, b), '')])
-        print(f'Criado {arquivo.name}. Preencha demandas vazias antes de executar.')
-    dados = {}
-    with arquivo.open(encoding='utf-8-sig', newline='') as f:
-        for row in csv.DictReader(f):
-            a, b = row['origem'].strip(), row['destino'].strip()
-            valor = row['demanda'].strip()
-            if not valor:
-                continue
-            try:
-                numero = int(valor)
-            except ValueError as exc:
-                raise ValueError(f'Demanda deve ser inteiro: {a} -> {b}: {valor}') from exc
-            if numero < 0:
-                raise ValueError(f'Demanda negativa: {a} -> {b}')
-            if (a, b) in dados:
-                raise ValueError(f'Demanda duplicada: {a} -> {b}')
-            dados[a, b] = numero
-    faltantes = [od for od in mercados if od not in dados]
-    if faltantes:
-        raise ValueError(f'Preencha {arquivo.name} para os mercados: {faltantes}')
-    return {od: dados[od] for od in mercados}
-
-
-def gerar_demanda(mercados, perfil, rng):
-    minimo, maximo = PERFIS[perfil]
-    dados = {}
-    for a, b in mercados:
-        valor = int(rng.integers(minimo, maximo + 1))
-        if perfil == 'polos_regionais' and (a in POLOS or b in POLOS):
-            valor = round(valor * FATOR_POLOS)
-        dados[a, b] = valor
-    return dados
-
+# ============================================================
+# FORMULACAO E RESOLUCAO DO PLI
+# ============================================================
 
 def resolver_modelo(cidades, mercados, tarifas, demanda=None):
-    """Cria um novo modelo por execucao, sem reutilizar restricoes antigas."""
-    modelo = pulp.LpProblem('Alocacao_EFVM', pulp.LpMaximize)
-    x = {od: pulp.LpVariable(f'x_{i}_{j}', lowBound=0, cat='Integer')
-         for i, a in enumerate(cidades) for j, b in enumerate(cidades) if i < j
-         for od in [(a, b)]}
-    pos = {nome: i for i, nome in enumerate(cidades)}
-    modelo += pulp.lpSum(tarifas[od] * x[od] for od in mercados)
-    for s in range(len(cidades) - 1):
-        modelo += (pulp.lpSum(x[a, b] for a, b in mercados
-                             if pos[a] <= s < pos[b]) <= CAPACIDADE,
-                   f'capacidade_{s}')
+
+    n = len(cidades)
+
+    modelo = pulp.LpProblem(
+        "Alocacao_EFVM",
+        pulp.LpMaximize
+    )
+
+    # --------------------------------------------------------
+    # 1. VARIAVEIS DE DECISAO
+    # --------------------------------------------------------
+
+    # x[i,j] = quantidade de passagens vendidas de i para j
+
+    x = {
+        (i, j): pulp.LpVariable(
+            f"x_{i}_{j}",
+            lowBound=0,
+            cat=pulp.LpInteger
+        )
+        for i in range(n)
+        for j in range(i + 1, n)
+    }
+
+    # --------------------------------------------------------
+    # 2. FUNCAO OBJETIVO
+    # --------------------------------------------------------
+
+    # Maximizar a receita total com a venda de passagens.
+
+    modelo += pulp.lpSum(
+        tarifas[cidades[i], cidades[j]] * x[i, j]
+        for i, j in x
+    )
+
+    # --------------------------------------------------------
+    # 3. RESTRICOES DE CAPACIDADE
+    # --------------------------------------------------------
+
+    # A ocupacao em cada trecho nao pode ultrapassar
+    # a capacidade do trem.
+
+    for s in range(n - 1):
+
+        modelo += (
+            pulp.lpSum(
+                x[i, j]
+                for i, j in x
+                if i <= s < j
+            ) <= CAPACIDADE,
+            f"Capacidade_{s}"
+        )
+
+    # --------------------------------------------------------
+    # 4. RESTRICOES DE DEMANDA
+    # --------------------------------------------------------
+
+    # Cenario 1: sem limite de demanda.
+    # Cenarios 2 e 3: vendas limitadas pela demanda O-D.
+
     if demanda is not None:
-        for a, b in mercados:
-            modelo += x[a, b] <= demanda[a, b], f'demanda_{pos[a]}_{pos[b]}'
+
+        for i, j in x:
+
+            modelo += (
+                x[i, j] <= demanda[cidades[i], cidades[j]],
+                f"Demanda_{i}_{j}"
+            )
+
+    # --------------------------------------------------------
+    # 5. RESOLUCAO
+    # --------------------------------------------------------
+
     inicio = time.perf_counter()
-    status = modelo.solve(pulp.PULP_CBC_CMD(msg=False))
+
+    status = modelo.solve(
+        pulp.PULP_CBC_CMD(msg=False)
+    )
+
     tempo = time.perf_counter() - inicio
+
     if status != pulp.LpStatusOptimal:
-        raise RuntimeError(f'Solver retornou: {pulp.LpStatus[status]}')
-    vendas = {od: int(round(pulp.value(x[od]))) for od in mercados}
-    ocupacoes = [sum(vendas[a, b] for a, b in mercados if pos[a] <= s < pos[b])
-                 for s in range(len(cidades) - 1)]
-    receita = sum(tarifas[od] * vendas[od] for od in mercados)
+        raise RuntimeError(
+            f"Solver: {pulp.LpStatus[status]}"
+        )
+
+    # --------------------------------------------------------
+    # 6. RESULTADOS
+    # --------------------------------------------------------
+
+    vendas = {
+        (cidades[i], cidades[j]): int(
+            round(pulp.value(x[i, j]))
+        )
+        for i, j in x
+    }
+
+    receita = sum(
+        tarifas[od] * vendas[od]
+        for od in mercados
+    )
+
+    passagens = sum(vendas.values())
+
+    ocupacoes = []
+
+    for s in range(n - 1):
+
+        ocupacao = sum(
+            vendas[cidades[i], cidades[j]]
+            for i, j in x
+            if i <= s < j
+        )
+
+        ocupacoes.append(ocupacao)
+
+    ocupacao_media = (
+        100 * statistics.mean(ocupacoes) / CAPACIDADE
+    )
+
+    atendimento = None
+
+    if demanda is not None:
+
+        total_demanda = sum(demanda.values())
+
+        if total_demanda > 0:
+            atendimento = (
+                100 * passagens / total_demanda
+            )
+
     return {
-        'receita': receita,
-        'passagens': sum(vendas.values()),
-        'ocupacoes': ocupacoes,
-        'ocupacao_media_pct': 100 * statistics.mean(ocupacoes) / CAPACIDADE,
-        'atendimento_pct': (100 * sum(vendas.values()) / sum(demanda.values())
-                            if demanda is not None and sum(demanda.values()) > 0 else None),
-        'tempo': tempo,
-        'vendas': vendas,
+        "receita": receita,
+        "passagens": passagens,
+        "vendas": vendas,
+        "ocupacoes": ocupacoes,
+        "ocupacao_media_pct": ocupacao_media,
+        "atendimento_pct": atendimento,
+        "tempo": tempo,
     }
 
 
-def imprimir_resultado(cidades, mercados, tarifas, demanda, resultado):
-    print(f"Receita maxima: R$ {resultado['receita']:,.2f}")
-    print(f"Tempo de resolucao: {resultado['tempo']:.6f} s")
-    print(f"Passagens vendidas: {resultado['passagens']}")
-    print('\nOrigem -> Destino | Vendidas | Demanda | Tarifa')
-    for a, b in mercados:
-        q = resultado['vendas'][a, b]
-        #if q:
-        d = demanda[a, b] if demanda is not None else 'ilimitada'
-        print(f'{a} -> {b} | {q} | {d} | R$ {tarifas[a, b]:.2f}')
-    print('\nOcupacao por trecho:')
-    for s, q in enumerate(resultado['ocupacoes']):
-        print(f'{cidades[s]} -> {cidades[s+1]}: '
-              f'{q}/{CAPACIDADE} ({100*q/CAPACIDADE:.1f}%)')
-    if demanda is not None:
-        print(f"Atendimento da demanda: {resultado['passagens']}/{sum(demanda.values())} "
-              f"({resultado['atendimento_pct']:.1f}%)" if resultado['atendimento_pct'] is not None
-              else 'Atendimento da demanda: demanda total zero')
-
+# ============================================================
+# CENARIO 3 - SIMULACOES
+# ============================================================
 
 def simular_cenario_3(cidades, mercados, tarifas):
-    # Uma semente por perfil permite reproduzir integralmente o experimento.
-    sementes = np.random.SeedSequence(SEMENTE).spawn(len(PERFIS))
-    registros = []
-    print(f'\nCenario 3 | {len(cidades)} estacoes | {len(mercados)} variaveis | '
-          f'{REPETICOES} repeticoes por perfil')
-    for (perfil, _), seed in zip(PERFIS.items(), sementes):
-        rng = np.random.default_rng(seed)
-        resultados = []
-        for repeticao in range(1, REPETICOES + 1):
-            demanda = gerar_demanda(mercados, perfil, rng)
-            r = resolver_modelo(cidades, mercados, tarifas, demanda)
-            registro = {
-                'perfil': perfil, 'repeticao': repeticao,
-                'receita': r['receita'], 'passagens': r['passagens'],
-                'demanda_total': sum(demanda.values()),
-                'ocupacao_media_pct': r['ocupacao_media_pct'],
-                'atendimento_pct': r['atendimento_pct'],
-                'tempo_s': r['tempo'],
-            }
-            registros.append(registro)
-            resultados.append(registro)
-        def media(campo):
-            return statistics.mean(r[campo] for r in resultados)
-        print(f'\nPerfil: {perfil}')
-        print(f"Receita media: R$ {media('receita'):,.2f}")
-        print(f"Desvio padrao da receita: R$ {statistics.stdev(r['receita'] for r in resultados):,.2f}"
-              if REPETICOES > 1 else 'Desvio padrao: N/A (uma repeticao)')
-        print(f"Passagens medias: {media('passagens'):.1f}")
-        print(f"Ocupacao media: {media('ocupacao_media_pct'):.1f}%")
-        print(f"Atendimento medio: {media('atendimento_pct'):.1f}%")
-        print(f"Tempo mediano: {statistics.median(r['tempo_s'] for r in resultados):.4f} s")
 
-    arquivo = PASTA / 'resultados_cenario3.csv'
-    with arquivo.open('w', newline='', encoding='utf-8-sig') as f:
-        writer = csv.DictWriter(f, fieldnames=list(registros[0]))
+    rng = np.random.default_rng(SEMENTE)
+
+    pesos = calcular_pesos_populacionais(mercados)
+
+    registros = []
+
+    por_perfil = {
+        perfil: [] for perfil in PERFIS
+    }
+
+    print(
+        f"\nCenario 3 | {len(cidades)} estacoes | "
+        f"{len(mercados)} variaveis | "
+        f"{REPETICOES} repeticoes por perfil"
+    )
+
+    for repeticao in range(1, REPETICOES + 1):
+
+        # Cada repeticao gera demandas diferentes.
+        # O mesmo conjunto de fatores aleatorios e usado
+        # nos tres perfis, facilitando a comparacao.
+        fatores = rng.uniform(
+            0, 1, size=len(mercados)
+        )
+
+        for perfil in PERFIS:
+
+            # Reinicializa um gerador com os mesmos fatores
+            # para os tres perfis desta repeticao.
+            class GeradorPareado:
+                def __init__(self, valores):
+                    self.valores = iter(valores)
+
+                def uniform(self, minimo, maximo):
+                    u = next(self.valores)
+                    return minimo + (maximo - minimo) * u
+
+            gerador = GeradorPareado(fatores)
+
+            demanda = gerar_demanda(
+                mercados, perfil, pesos, gerador
+            )
+
+            resultado = resolver_modelo(
+                cidades, mercados, tarifas, demanda
+            )
+
+            registro = {
+                "perfil": perfil,
+                "repeticao": repeticao,
+                "receita": resultado["receita"],
+                "passagens": resultado["passagens"],
+                "demanda_total": sum(demanda.values()),
+                "ocupacao_media_pct": resultado[
+                    "ocupacao_media_pct"
+                ],
+                "atendimento_pct": resultado[
+                    "atendimento_pct"
+                ],
+                "tempo_s": resultado["tempo"],
+            }
+
+            registros.append(registro)
+            por_perfil[perfil].append(registro)
+
+    # --------------------------------------------------------
+    # RESUMO POR PERFIL
+    # --------------------------------------------------------
+
+    for perfil, resultados in por_perfil.items():
+
+        def media(campo):
+            return statistics.mean(
+                r[campo] for r in resultados
+            )
+
+        receitas = [
+            r["receita"] for r in resultados
+        ]
+
+        print(f"\nPerfil: {perfil}")
+
+        print(
+            f"Receita media: R$ {media('receita'):,.2f}"
+        )
+
+        if len(receitas) > 1:
+            desvio = statistics.stdev(receitas)
+            print(
+                f"Desvio padrao da receita: R$ {desvio:,.2f}"
+            )
+
+        print(
+            f"Demanda total media: "
+            f"{media('demanda_total'):.1f}"
+        )
+
+        print(
+            f"Passagens medias: {media('passagens'):.1f}"
+        )
+
+        print(
+            f"Ocupacao media: "
+            f"{media('ocupacao_media_pct'):.1f}%"
+        )
+
+        atendimentos = [
+            r["atendimento_pct"]
+            for r in resultados
+            if r["atendimento_pct"] is not None
+        ]
+
+        if atendimentos:
+            print(
+                f"Atendimento medio: "
+                f"{statistics.mean(atendimentos):.1f}%"
+            )
+
+        print(
+            f"Tempo mediano: "
+            f"{statistics.median(r['tempo_s'] for r in resultados):.4f} s"
+        )
+
+    # --------------------------------------------------------
+    # EXPORTACAO PARA CSV
+    # --------------------------------------------------------
+
+    arquivo = PASTA / "resultados_cenario3.csv"
+
+    with arquivo.open(
+        "w", encoding="utf-8-sig", newline=""
+    ) as f:
+
+        writer = csv.DictWriter(
+            f, fieldnames=list(registros[0])
+        )
+
         writer.writeheader()
         writer.writerows(registros)
-    print(f'\nResultados das simulacoes salvos em: {arquivo.name}')
 
+    print(
+        f"\nResultados salvos em: {arquivo.name}"
+    )
+
+
+# ============================================================
+# FUNCAO PRINCIPAL
+# ============================================================
 
 def main():
+
     validar_configuracao()
-    cidades = [ESTACOES[i] for i in reversed(SELECIONADAS)]
-    mercados = list(itertools.combinations(cidades, 2))
-    tarifas = carregar_tarifas(PASTA / 'tarifas_vale.csv', mercados)
-    print('Sentido: Belo Horizonte -> Pedro Nolasco (Grande Vitoria)')
-    print('Estacoes:', ' -> '.join(cidades))
-    print(f'Classe: {CLASSE} | Capacidade: {CAPACIDADE} | Cenario: {CENARIO}')
+
+    # Inverte o sentido para BH -> Vitoria.
+    cidades = [
+        ESTACOES[i]
+        for i in reversed(SELECIONADAS)
+    ]
+
+    mercados = list(
+        itertools.combinations(cidades, 2)
+    )
+
+    tarifas = carregar_tarifas(
+        PASTA / "tarifas_vale.csv",
+        mercados
+    )
+
+    print(
+        "Sentido: Belo Horizonte -> Pedro Nolasco"
+    )
+    print(
+        "Estacoes:", " -> ".join(cidades)
+    )
+    print(
+        f"Classe: {CLASSE} | "
+        f"Capacidade: {CAPACIDADE} | "
+        f"Cenario: {CENARIO}"
+    )
+
     if CENARIO == 3:
-        simular_cenario_3(cidades, mercados, tarifas)
+
+        simular_cenario_3(
+            cidades, mercados, tarifas
+        )
+
     else:
-        demanda = carregar_demanda_fixa(mercados) if CENARIO == 2 else None
-        resultado = resolver_modelo(cidades, mercados, tarifas, demanda)
-        imprimir_resultado(cidades, mercados, tarifas, demanda, resultado)
+
+        if CENARIO == 2:
+            demanda = carregar_demanda_fixa(mercados)
+        else:
+            demanda = None
+
+        resultado = resolver_modelo(
+            cidades, mercados, tarifas, demanda
+        )
+
+        imprimir_resultado(
+            cidades, mercados, tarifas,
+            demanda, resultado
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
